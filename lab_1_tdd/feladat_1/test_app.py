@@ -22,3 +22,13 @@ def test_get_todos(client):
     assert response.is_json
     # We added 2 items in the fixture, so we expect to get them back
     assert len(response.json) == 2
+
+def test_post_todos(client):
+    """Test posting toto-do items to database."""
+    response = client.post('/todos', json={"task": "Finish the project"})
+    assert response.status_code == 201
+    assert response.is_json
+    data = response.json
+    assert data['task'] == "Finish the project"
+    assert data["done"] == False
+    assert "id" in data
